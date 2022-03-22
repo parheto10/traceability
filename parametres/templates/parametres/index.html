@@ -1,0 +1,649 @@
+{% extends 'base.html' %}
+{% load static %}
+ {% load humanize %}
+{% block title %}
+    Accueil |
+{% endblock %}
+{% block content %}
+    <div id="wrapper">
+            <!-- Navigation -->
+            {% include 'admin_nav.html' %}
+            <div id="page-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {% if user.is_authenticated %}
+                                <h1 class="page-header">TABLEAU DE BORD - <strong class="text-uppercase">{{ user.username }}</strong></h1>
+                            {% endif %}
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                    <div class="row">
+                       <div class="col-lg-4 col-md-offset-4">
+                           {% include '_partials/messages_display.html' %}
+                       </div>
+                        <!-- /.col-lg-8 -->
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-list-alt fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            {% if nb_cooperatives %}
+                                                <div class="huge">{{ nb_cooperatives }}</div>
+                                                <div>Coopératives</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Coopératives</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-red">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-users fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            {% if nb_producteurs %}
+                                                <div class="huge">{{ nb_producteurs }}</div>
+                                                <div>Producteurs</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Producteurs</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-green">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="glyphicon glyphicon-grain fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            {% if nb_parcelles %}
+                                                <div class="huge">{{ nb_parcelles }}</div>
+                                                <div>Plantations</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Plantations</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-yellow">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="glyphicon glyphicon-map-marker fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            {% if Superficie %}
+                                                <div class="huge">{{ Superficie | floatformat:2 }}</div>
+                                                <div>Superficie Totale(Ha)</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Superficie Totale(Ha)</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <i class="fa fa-database fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-10 text-right">
+                                            {% if production %}
+                                                <div class="huge">{{ production }}</div>
+                                                <div>Prod. toutes campagnes</div>
+                                            {% else %}
+                                                <div>Prod. toutes campagnes</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <i class="fa fa-cubes fa-4x" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-xs-10 text-right">
+                                            {% if grande_production %}
+                                                <div class="huge">{{ grande_production }}</div>
+                                                <div>Prod. Grande Campagne</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Prod. Grande Campagne</div>
+                                            {% endif %}
+{#                                            <div>Prod. Grande Campagne</div>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <i class="fa fa-cube fa-4x" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-xs-10 text-right">
+                                            {% if petite_production %}
+                                                <div class="huge">{{ petite_production }}</div>
+                                                <div>Prod. Petite Campagne</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Prod. Petite Campagne</div>
+                                            {% endif %}
+{#                                            <div>Petite Campagne</div>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <i class="glyphicon glyphicon-tree-deciduous fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-10 text-right">
+                                            {% if Total_plant %}
+                                                <div class="huge">{{ Total_plant }}</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                            {% endif %}
+                                            <div>Nombre d'Arbres</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <i class="fa fa-bar-chart-o fa-fw"></i> Cooperatives membres
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">REGION</th>
+                                                    <th class="text-center">SIGLE</th>
+                                                    <th class="text-center">SIEGE/LOCALITE</th>
+                                                    <th class="text-center">CONTACTS</th>
+                                                    <th class="text-center">NBRE PRODUCTEURS</th>
+                                                    <th class="text-center">NBRE SECTIONS</th>
+                                                    <th class="text-center">NBRE PARCELLES</th>
+                                                    <th class="text-center">SUPERFICIE (Ha)</th>
+                                                    <th>ACTIONS</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for coop in cooperatives %}
+                                                    <tr class="odd gradeX text-center">
+                                                        <td>{{ coop.region }}</td>
+                                                        <td>{{ coop.sigle }}</td>
+                                                        {% if coop.siege %}
+                                                            <td>{{ coop.siege }}</td>
+                                                        {% else %}
+                                                            <td>Localité Non Précisée</td>
+                                                        {% endif %}
+                                                        <td class="center">{{ coop.contacts }}</td>
+                                                        <td class="center">{{ coop.producteurs.all|length }}</td>
+                                                        <td class="center">{{ coop.sections.all|length }}</td>
+                                                        <td class="center">{{ coop.parcelles }}</td>
+                                                        <td class="center">{{ coop.Superf | floatformat:2 }}</td>
+                                                        <td class="center"><a href="{% url 'detail_coop' coop.pk %}" class="btn btn-primary btn-xs">Accéder</a></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                            <!-- /.panel -->
+                        </div>
+                        <!-- /.col-lg-8 -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                           <div class="panel panel-primary">
+                               <div class="panel-heading">
+                                    <i class="fa fa-bar-chart fa-fw"></i> Graphe Producteur / Coopérative
+                               </div>
+                                <div class="panel-body">
+                                     <script src="{% static 'js/chart.js' %}"></script>
+                                     <canvas id="myChart"></canvas>
+                                     <script>
+                                     var ctx = document.getElementById('myChart').getContext('2d');
+                                     var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [
+                                                {% for coop in cooperatives %}
+                                                    '{{ coop.sigle }}',
+                                                {% endfor %}
+
+                                            ],
+                                            datasets: [{
+                                                label: 'Producteurs / Coopérative',
+                                                data: [
+                                                        {% for coop in cooperatives %}
+                                                            '{{ coop.producteurs.all|length }}',
+                                                        {% endfor %}
+                                                ],
+                                                 backgroundColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                    </script>
+                                </div>
+                           </div>
+                       </div>
+                        <div class="col-sm-6">
+                            <div class="panel panel-green">
+                                <div class="panel-heading">
+                                     <i class="fa fa-bar-chart-o fa-fw"></i> Graphe Planting / Espèce
+                                 </div>
+                                 <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <canvas id="stats-plantings" data-url="{% url 'detailPlantings' %}"></canvas>
+                                </div>
+                                 <!-- /.panel-body -->
+                            </div>
+                       </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                           <div class="panel panel-green">
+                               <div class="panel-heading">
+                                    <i class="fa fa-bar-chart-o fa-fw"></i> Graphe Plants Reçu / Coopérative
+                                </div>
+                                <!-- /.panel-heading -->
+                               <div class="panel-body">
+                                     <script src="{% static 'js/chart.js' %}"></script>
+                                     <canvas id="myChart4"></canvas>
+                                     <script>
+                                     var ctx = document.getElementById('myChart4').getContext('2d');
+                                     var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [
+                                                {% for cooperative in cooperatives %}
+                                                    '{{ cooperative.sigle }}',
+                                                {% endfor %}
+                                            ],
+                                            datasets: [{
+                                                label: 'Plants Reçu / Coopérative',
+                                                data: [
+                                                        {% for cooperative in cooperatives %}
+                                                            '{{ cooperative.plants }}',
+                                                        {% endfor %}
+                                                ],
+                                                 backgroundColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                    </script>
+                                </div>
+                                <!-- /.panel-body -->
+                           </div>
+                       </div>
+                        <div class="col-sm-6">
+                               <div class="panel panel-primary">
+                                   <div class="panel-heading">
+                                        <i class="fa fa-bar-chart-o fa-fw"></i> Graphe Superficie / Coopérative (Ha)
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                   <div class="panel-body">
+                                     <script src="{% static 'js/chart.js' %}"></script>
+                                     <canvas id="myChart5"></canvas>
+                                     <script>
+                                     var ctx = document.getElementById('myChart5').getContext('2d');
+                                     var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [
+                                                {% for cooperative in cooperatives %}
+                                                    '{{ cooperative.sigle }}',
+                                                {% endfor %}
+                                                {#console.log('data.labels'),#}
+                                            ],
+                                            datasets: [{
+                                                label: 'Superficie / Coopérative (Ha)',
+                                                data: [
+                                                    {% for cooperative in cooperatives %}
+                                                        '{{ cooperative.superficies }}',
+                                                    {% endfor %}
+                                                    console.log('data'),
+                                                ],
+                                                 backgroundColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                    </script>
+                                </div>
+                                    <!-- /.panel-body -->
+                               </div>
+                           </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                           <div class="panel panel-primary">
+                               <div class="panel-heading">
+                                    <i class="fa fa-bar-chart-o fa-fw"></i> Graphe Parcelle/ Coopérative
+                                </div>
+                                <!-- /.panel-heading -->
+                               <div class="panel-body">
+                                     <script src="{% static 'js/chart.js' %}"></script>
+                                     <canvas id="myChart1"></canvas>
+                                     <script>
+                                     var ctx = document.getElementById('myChart1').getContext('2d');
+                                     var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [
+                                                {% for cooperative in cooperatives %}
+                                                    '{{ cooperative.sigle }}',
+                                                {% endfor %}
+                                            ],
+                                            datasets: [{
+                                                label: 'Parcelles / Coopérative',
+                                                data: [
+                                                        {% for cooperative in cooperatives %}
+                                                            '{{ cooperative.parcelles }}',
+                                                        {% endfor %}
+                                                ],
+                                                 backgroundColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                    </script>
+                                </div>
+{#                               <div class="panel-body">#}
+{#                                   <canvas id="stats-semences" data-url="#"></canvas>#}
+{#                               </div>#}
+                                <!-- /.panel-body -->
+                           </div>
+                       </div>
+                        <div class="col-sm-6">
+                               <div class="panel panel-green">
+                                   <div class="panel-heading">
+                                        <i class="fa fa-bar-chart-o fa-fw"></i> Graphe Production / Coopérative (KG)
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                  <div class="panel-body">
+                                     <script src="{% static 'js/chart.js' %}"></script>
+                                     <canvas id="myChart3"></canvas>
+                                     <script>
+                                     var ctx = document.getElementById('myChart3').getContext('2d');
+                                     var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [
+                                                {% for cooperative in cooperatives %}
+                                                    '{{ cooperative.sigle }}',
+                                                {% endfor %}
+                                            ],
+                                            datasets: [{
+                                                label: 'Production / Coopérative (KG)',
+                                                data: [
+                                                        {% for cooperative in cooperatives %}
+                                                            '{{ cooperative.productions }}',
+                                                        {% endfor %}
+                                                ],
+                                                backgroundColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                    </script>
+                                </div>
+                                    <!-- /.panel-body -->
+                               </div>
+                           </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+        </div>
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+{#        <script src="{% static 'js/Chart.min.js' %}"></script>#}
+        <script>
+            $(function () {
+                var $statistiquePlantings = $("#stats-plantings");
+                $.ajax({
+                    url: $statistiquePlantings.data("url"),
+                    success:function (data) {
+                        {#console.log(data);#}
+                        var ctx = $statistiquePlantings[0].getContext("2d");
+                        new Chart(ctx, {
+                            type:'bar',
+                            data : {
+                                labels : data.labels,
+                                datasets : [{
+                                    label : 'Plantings',
+                                    backgroundColor: [
+                                        'rgb(13,137,41)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 3,
+                                    data : data.data
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                legend : {
+                                    position : 'top',
+                                },
+                                title : {
+                                    display : true,
+                                    text: 'Plants reçus / Coopérative'
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                var $plantingCoop = $("#plantings-coop");
+                $.ajax({
+                    url: $plantingCoop.data("url"),
+                    success:function (data) {
+                        console.log(data);
+                        var ctx = $plantingCoop[0].getContext("2d");
+                        new Chart(ctx, {
+                            type:'bar',
+                            data : {
+                                labels : data.labels,
+                                datasets : [{
+                                    label : 'Plantings',
+                                    backgroundColor: [
+                                        'rgb(13,137,41)',
+                                    ],
+                                    borderWidth: 3,
+                                    data : data.data
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                legend : {
+                                    position : 'top',
+                                },
+                                title : {
+                                    display : true,
+                                    text: 'Plantings / Coopérative'
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+{% endblock %}

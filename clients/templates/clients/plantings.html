@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% block title %}
+    Plantings |
+{% endblock %}
+{% block content %}
+    <div id="wrapper">
+        {% include 'clients/client_nav.html' %}
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                          <i class="glyphicon glyphicon-tree-deciduous"></i> Plantings
+                        </h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% include '_partials/messages_display.html' %}
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <a href="{% url 'clients:export_planting_xls' %}" class="btn btn-success"><i class="fa fa-file-excel-o fa-fw fa-2x"></i> EXCEL</a>
+                                <!--<a href="#" class="btn btn-danger"><i class="fa fa-file-pdf-o fa-fw fa-2x"></i> PDF</a>-->
+{#                                <button type="button" class="btn btn-success pull-right" style="font-size:1.8vmin; margin-top: -5px" data-toggle="modal" data-target="#ParcelleModal" data-whatever="@mdo">#}
+{#                                    <i class="fa fa-plus"> </i> Ajouter#}
+{#                                </button>#}
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body" style="font-size: 12px">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover text-center" id="dataTables-example">
+                                        <thead class="text-center">
+                                            <tr class="text-center">
+                                                <th class="text-center">COOPERATIVE</th>
+                                                <th class="text-center">PRODUCTEUR</th>
+                                                <th class="text-center">PARCELLE</th>
+                                                <th class="text-center">NBRE PLANTS EXISTANTS</th>
+                                                <th class="text-center">NBRE PLANTS RECUS</th>
+                                                <th class="text-center">NBRE PLANTS TOTAL</th>
+                                                <th class="text-center">DATE</th>
+                                                <th class="text-center">MONITORING</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            {% for planting in plantings %}
+                                                <tr class="odd gradeX">
+{#                                                    <td class="center">{{ planting.parcelle.projet.titre }} - ({{ planting.parcelle.projet.accronyme }})</td>#}
+                                                    <td class="center">
+                                                        {{ planting.parcelle.producteur.cooperative.sigle }}
+                                                    </td>
+                                                    <td class="center">
+                                                        {{ planting.parcelle.producteur.nom }}
+                                                    </td>
+                                                    <td class="center">{{ planting.parcelle.code }}</td>
+                                                    <td class="center">{{ planting.nb_plant_exitant }}</td>
+                                                    <td class="center">{{ planting.plant_recus }}</td>
+                                                    <td class="center">{{ planting.plant_total }}</td>
+                                                    <td class="center">{{ planting.date | date:'d/m/Y' }}</td>                                               
+
+                                                    <td class="center">
+                                                        <a href="{% url 'clients:suivi_planting' planting.id %}" class="btn btn-success">
+                                                             suivi <i class="fa fa-chevron-right"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-8 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+
+{#                <div class="modal fade"  data-keyboard="false" data-backdrop="static" id="ParcelleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+{#                    <div class="modal-dialog modal-lg" role="document">#}
+{#                        <form id="form" method="post" enctype="multipart/form-data">#}
+{#                            {% csrf_token %}#}
+{#                            <div class="panel panel-green">#}
+{#                            <div class="panel-heading">#}
+{#                                <h4 class="modal-title" id="exampleModalLabel" style="font-weight:bold">FORMULAIRE PLANTING</h4>#}
+{#                                <button ID="btnAnnuler" type="button" data-dismiss="modal" class="btn btn-danger pull-right" style="font-size:1.8vmin;margin-top: -30px">#}
+{#                                    <i class="fa fa-close"></i>#}
+{#                                </button>#}
+{#                            </div>#}
+{#                            <div class="panel-body">#}
+{#                                <div class="row">#}
+{#                                    <div class="col-sm-12">#}
+{#                                        <div class="row">#}
+{#                                            <div class="col-sm-6">#}
+{#                                                <div class="row">#}
+{#                                                    <div class="col-sm-6">#}
+{#                                                        <div class="form-group">#}
+{#                                                            <label>Date</label>#}
+{#                                                            {% render_field plantingForm.date class="form-control" type="date" placeholder="Date Planting" %}#}
+{#                                                            <span class="date_error text-danger"></span>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-sm-6">#}
+{#                                                        <div class="form-group">#}
+{#                                                            <label>Campagne</label>#}
+{#                                                            {% render_field plantingForm.campagne class="form-control" placeholder="Campagne" %}#}
+{#                                                            <span class="campagne_error text-danger"></span>#}
+{#                                                            #}
+{##}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="col-sm-6">#}
+{#                                                <div class="form-group">#}
+{#                                                    <label>Projet</label>#}
+{#                                                    {% render_field plantingForm.projet class="form-control" placeholder="Projet" %}#}
+{#                                                    <span class="projet_error text-danger"></span>#}
+{##}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="row">#}
+{#                                            <div class="col-lg-6">#}
+{#                                                <div class="form-group">#}
+{#                                                    <label for="parcelle">Producteur Parcelle</label>#}
+{#                                                    <input type="text" list="parcelle" name="parcelle"   placeholder="Code parcelle..." class="form-control">#}
+{#                                                    <span class="parcelle_error text-danger"></span>#}
+{#                                                    <datalist id="parcelle">#}
+{#                                                        {% for parc in parcelles %}#}
+{#                                                            <option value="{{ parc.code }}">{{ parc.code }} {{ parc.producteur.nom }}</option>#}
+{#                                                        {% endfor %}#}
+{#                                                    </datalist>#}
+{#                                                        #}
+{#                                                  #}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="col-lg-6">#}
+{#                                                <div class="row">#}
+{#                                                    <div class="col-sm-10">#}
+{#                                                        <div class="form-group">#}
+{#                                                            <label>Nombre Plants Existants</label>#}
+{#                                                              {% render_field plantingForm.nb_plant_exitant type="number" class="form-control" placeholder="Nbre Plants Existants" %}#}
+{#                                                              <small class="form-text text-muted">Diamètre autorisé(JPG, GIF or PNG, Taile Max 2MB)</small>#}
+{#                                                              <span class="nb_plant_exitant_error text-danger"></span>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{##}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{##}
+{##}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <hr style="margin: 0px;">                                #}
+{#                                <fieldset>#}
+{#                                    <legend class="text-center" style="margin-bottom: 0px;">Ajouter des especes </legend>#}
+{#                                <table id="emptbl" class="table table-bordered border-primary">#}
+{#                                    <thead class="table-dark">#}
+{#                                        <tr>#}
+{#                                            <th>Espece</th>#}
+{#                                            <th>Nombres de plants</th>#}
+{#                                            <!-- <th>Department</th> -->#}
+{#                                        </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                        <tr> #}
+{#                                            <td id="col0"> #}
+{#                                                <select class="form-control" name="espece" id="dept" required> #}
+{#                                                    <option selected value="">-- Select --</option> #}
+{#                                                      {% for espece in especes %}#}
+{#                                                    <option value="{{espece.id}}">{{espece.libelle}} ({{espece.accronyme}})</option>#}
+{#                                                    {% endfor %}#}
+{#                                                                                                #}
+{#                                                </select> #}
+{#                                            </td> #}
+{#                                            <td id="col1"><input type="number" class="form-control" value="0" name="nb_plante" placeholder="Entrer le nombre de plants" required></td> #}
+{#                                           <!-- <td id="col2"><input type="tel" class="form-control" name="phone[]" placeholder="Enter your phone" required></td> -->#}
+{#                                         #}
+{#                                        </tr>#}
+{#                                    </tbody>  #}
+{#                                </table> #}
+{##}
+{#                                     <button type="button" class="btn btn-sm btn-info" onclick="addRows()">Ajouter</button>#}
+{#                                     <button type="button" class="btn btn-sm btn-danger" onclick="deleteRows()">Retirer</button>#}
+{#                                     <button onclick="SaveAndRest('{% url 'cooperatives:plantingSave' %}')" class="btn btn-sm btn-success" style="float: right;" >Enregistrer Planting</button>#}
+{#                             #}
+{#                            </fieldset>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block custom_js %}
+
+
+{#<script>#}
+{#    $(".add_details").click(function(){#}
+{#        var details_row=$(".first_details").clone();#}
+{#        details_row.removeClass("first_details");#}
+{#        details_row.find(".espece").val("");#}
+{#        details_row.find(".nb_plante").val("");#}
+{#        $(".details_div").append(details_row);#}
+{#    });#}
+{#    $(".remove_details").click(function(){#}
+{#        if($(".details_div").find(".details_div_row").length>1){#}
+{#            $(".details_div").children().last().remove();#}
+{#        }#}
+{#    });#}
+{#    $(".btn_valider").click(function (){#}
+{#        var form = new FormData($("#myform")[0]);#}
+{#        form.append("details");#}
+{##}
+{#        //AJAX CODE TO SEND DATA#}
+{#        var xhr = new XMLHttpRequest();#}
+{#        xhr.onreadystatechange = function () {#}
+{#            if (xhr.status == 200){#}
+{#                console.log(xhr.responseText);#}
+{#            }#}
+{#        }#}
+{#        xhr.open("POST", "{% url "cooperatives:add_planting" %}", true);#}
+        {#$("")#}
+{##}
+{##}
+{#        //sending Form#}
+{#        xhr.send(form);#}
+{#    })#}
+{#</script>#}
+{##}
+{#<script>#}
+{#    function addRows()#}
+{#    { #}
+{#        var table = document.getElementById('emptbl');#}
+{#        var rowCount = table.rows.length;#}
+{#        var cellCount = table.rows[0].cells.length; #}
+{#        var row = table.insertRow(rowCount);#}
+{#        #}
+{#        for(var i =0; i < cellCount; i++)#}
+{#        {#}
+{##}
+{#            var cell = 'cell'+i;#}
+{#            cell = row.insertCell(i);#}
+{#            var copycel = document.getElementById('col'+i).innerHTML;#}
+{#            cell.innerHTML=copycel;#}
+{#            #}
+{#            //if(i == 2)#}
+{#            //{ #}
+{#            //    var radioinput = document.getElementById('col2').getElementsByTagName('input'); #}
+{#            //    for(var j = 0; j <= radioinput.length; j++)#}
+{#            //    { #}
+{#            //        if(radioinput[j].type == 'radio')#}
+{#            //        { #}
+{#            //            var rownum = rowCount;#}
+{#            //            radioinput[j].name = 'gender['+rownum+']';#}
+{#            //        }#}
+{#            //    }#}
+{#            //}#}
+{#        }#}
+{#    }#}
+{##}
+{#    function deleteRows()#}
+{#    {#}
+{#        var table = document.getElementById('emptbl');#}
+{#        var rowCount = table.rows.length;#}
+{#        if(rowCount > '2')#}
+{#        {#}
+{#            var row = table.deleteRow(rowCount-1);#}
+{#            rowCount--;#}
+{#        }else{#}
+{#            alert('Impossible de supprimer cette ligne');#}
+{#        }#}
+{#    }#}
+{#</script>#}
+<script src="{% static 'js/function.js' %}"></script>
+{% endblock %}

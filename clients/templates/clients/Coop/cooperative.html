@@ -1,0 +1,403 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+    Accueil |
+{% endblock %}
+{% block content %}
+    <div id="wrapper">
+            <!-- Navigation -->
+            {% include 'clients/Coop/client_nav.html' %}
+            <div id="page-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1 class="page-header">Tableau de Bord - {{ cooperative.sigle }}</h1>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-users fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            {% if coop_nb_producteurs %}
+                                                <div class="huge">{{ coop_nb_producteurs }}</div>
+                                                <div>Producteurs</div>
+                                            {% else %}
+                                                <div class="huge">{{ coop_nb_producteurs }}</div>
+                                                <div>Producteurs</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-green">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="glyphicon glyphicon-grain fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            {% if coop_nb_parcelles %}
+                                                <div class="huge">{{ coop_nb_parcelles }}</div>
+                                                <div>Plantations</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Plantations</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-yellow">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="glyphicon glyphicon-map-marker fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            {% if coop_superficie %}
+                                                <div class="huge">{{ coop_superficie | floatformat:2 }}</div>
+                                                <div>Superficie Totale (Ha)</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Superf. Totale (Ha)</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-red">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-list-alt fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            {% if nb_formations %}
+                                                <div class="huge">{{ nb_formations }}</div>
+                                                <div>Formations</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                                <div>Formations</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <i class="fa fa-database fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-10 text-right">
+                                            {% if production %}
+                                                <div class="huge">{{ production }}</div>
+                                                <div>Prod. toutes campagnes</div>
+                                            {% else %}
+                                                <div>Prod. toutes campagnes</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <i class="fa fa-database fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-10 text-right">
+                                            {% if grande_production %}
+                                                <div class="huge">{{ grande_production }}</div>
+                                                <div>Prod. Grande campagnes</div>
+                                            {% else %}
+                                                <div>Prod. Grande campagnes</div>
+                                            {% endif %}
+{#                                            <div>Grande Campagne</div>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <i class="fa fa-database fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-10 text-right">
+                                            {% if petite_production %}
+                                                <div class="huge">{{ petite_production }}</div>
+                                                <div>Prod. Petite campagnes</div>
+                                            {% else %}
+                                                <div>Prod. Petite campagnes</div>
+                                            {% endif %}
+{#                                            <div>Petite Campagne</div>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <i class="glyphicon glyphicon-tree-deciduous fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-10 text-right">
+                                            {% if coop_plants_total %}
+                                                <div class="huge">{{ coop_plants_total }}</div>
+                                            {% else %}
+                                                <div class="huge">0</div>
+                                            {% endif %}
+                                            <div>Nombre de plants</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                           <div class="panel panel-primary">
+                               <div class="panel-heading">
+                                    <i class="fa fa-bar-chart fa-fw"></i> Graphe Producteur/Section
+                               </div>
+                               <div class="panel-body">
+                                     <script src="{% static 'js/chart.js' %}"></script>
+                                     <canvas id="myChart"></canvas>
+                                     <script>
+                                     var ctx = document.getElementById('myChart').getContext('2d');
+                                     var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [
+                                                {% for s in section %}
+                                                    '{{ s.libelle }}',
+                                                {% endfor %}
+
+                                            ],
+                                            datasets: [{
+                                                label: ' Nbre Producteurs',
+                                                data: [
+                                                        {% for s in section %}
+                                                            '{{ s.producteurs.all|length }}',
+                                                        {% endfor %}
+                                                ],
+                                                backgroundColor: [
+                                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(54, 162, 235, 1)',
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                    </script>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="col-sm-6">
+                        <div class="panel panel-green">
+                                <div class="panel-heading">
+                                    <i class="fa fa-bar-chart-o fa-fw"></i> Statistiques Plants / Section
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <canvas id="espece-section" data-url="{% url 'clients:plants_par_section' cooperative.id %}"></canvas>
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                        </div>
+                        <!-- /.col-lg-8 -->
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Statistiques Planting / Espèce
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <canvas id="stats-plantings" data-url="{% url 'clients:coopdetailPlantings' cooperative.id %}"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-sm-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Production / Campagne
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <canvas id="stats-productions" data-url="{% url 'clients:prod_coop_par_campagne' cooperative.id %}"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+        </div>
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'js/Chart.min.js' %}"></script>
+        <script>
+            $(function () {
+                var $statistiquePlantings = $("#stats-plantings");
+                $.ajax({
+                    url: $statistiquePlantings.data("url"),
+                    success:function (data) {
+                        var ctx = $statistiquePlantings[0].getContext("2d");
+                        new Chart(ctx, {
+                            type:'bar',
+                            data : {
+                                labels : data.labels,
+                                datasets : [{
+                                    label : 'Plantings',
+                                    backgroundColor: [
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 3,
+                                    data : data.data
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                legend : {
+                                    position : 'top',
+                                },
+                                title : {
+                                    display : true,
+                                    text: 'Plantings / Coopérative'
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                var $statistiqueProductions = $("#stats-productions");
+                $.ajax({
+                    url: $statistiqueProductions.data("url"),
+                    success:function (data) {
+                        var ctx = $statistiqueProductions[0].getContext("2d");
+                        new Chart(ctx, {
+                            type:'bar',
+                            data : {
+                                labels : data.labels,
+                                datasets : [{
+                                    label : 'Production (KG)',
+                                    backgroundColor: [,
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 3,
+                                    data : data.data
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                legend : {
+                                    position : 'top',
+                                },
+                                title : {
+                                    display : true,
+                                    text: 'Production / Campagne (KG)'
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                var $especeSection = $("#espece-section");
+                $.ajax({
+                    url: $especeSection.data("url"),
+                    success:function (data) {
+                        var ctx = $especeSection[0].getContext("2d");
+                        new Chart(ctx, {
+                            type:'bar',
+                            data : {
+                                labels : data.labels,
+                                datasets : [{
+                                    label : 'Nbre de Plants',
+                                    backgroundColor: [
+                                        'rgb(13,137,41)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 3,
+                                    data : data.data
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                legend : {
+                                    position : 'top',
+                                },
+                                title : {
+                                    display : true,
+                                    text: 'Espèce / Section'
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+{% endblock %}
+

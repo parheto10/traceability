@@ -1,0 +1,127 @@
+
+
+        <div class="modal-dialog modal-lg" role="document">
+            {% load widget_tweaks %}
+            <form method="post" action="{% url 'edit_semence' %}" enctype="multipart/form-data" id="form_semence">
+                {% csrf_token %}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="modal-title" id="exampleModalLabel" style="font-weight:bold">RECEPTION SEMENCE</h4>
+                        <button ID="btnAnnuler" type="button" data-dismiss="modal" class="btn btn-danger pull-right" style="font-size:1.8vmin;margin-top: -30px">
+                            <i class="fa fa-close"></i>
+                        </button>
+                    </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6 ">
+                        <div class="form-group">
+                            <label>Espèce :</label>
+                            {% render_field semenceForm.espece_recu class="form-control" placeholder="Espece Recu" %}
+                        </div>
+                        
+                    </div>
+                    <div class="col-sm-6 ">
+                        <div class="form-group">
+                            <label>Nombre de Plant à Produire</label>
+                            {% render_field semenceForm.production class="form-control" placeholder="Nombre de Plant à Produire" %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 ">
+                        <div class="form-group">
+                            <label>Qte Semence Récue(Kg)</label>
+                            {% render_field semenceForm.qte_recu class="form-control" placeholder="QTE Réçue(Kg)" %}
+                        </div>
+                    </div>
+                    <div class="col-sm-6 ">
+                        <div class="form-group">
+                            <label>Fournisseurs</label>
+                            {% render_field semenceForm.fournisseur  class="form-control"  %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-6 ">
+
+                        <div class="form-group">
+                            <label>Date de reception</label>
+                            {% render_field semenceForm.date  class="form-control"  cols="4" rows="4" placeholder="jj/mm/aaa" %}
+                            <span class="date_error text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-6 ">
+
+                        <div class="form-group">
+                            <label>Details</label>
+                            {% render_field semenceForm.details  class="form-control"  cols="4" rows="4" %}
+                            <input type="hidden" name="instance_id" value="{{instance.id}}">
+                        </div>
+                    </div>
+                 
+                </div>
+
+            </div>
+           
+                    <div class="panel-footer">
+{#                      <Button ID="btnAnnuler" style="font-size:1.7vmin; width:100px" class="btn btn-danger"  data-dismiss="modal" >Annuler</Button>#}
+                        <button  name="btnValider"  id="btnEditSemence" class="btn btn-success btn-block" style="font-size:1.7vmin" > VALIDER </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script>
+    //var date = document.getElementById("id_date");
+    //var pattern =/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+
+    //date.addEventListener("keyup", function (event) {
+    //    if(pattern.test(date) == false) {
+    //        date.setCustomValidity("Desolé format de date incorrect !");
+    //    } else {
+    //        date.setCustomValidity("");
+    //    }
+    //});
+    $('#form_semence').on('submit', function (e) {
+        e.preventDefault()
+      
+        var form = this;
+
+        $.ajax({
+            url:$(form).attr('action'),
+            method:$(form).attr('method'),
+            data:$(form).serialize(),
+            dataType:'json',
+            success: function(data){
+                
+                if(data.status == 200){
+                    swal({
+                        title: data.msg,
+                        icon: "success",
+                    })
+                    .then((ok) => {
+                        if(ok) {
+                            location.reload();
+                        }
+                    });
+                }else{
+                    $.each(data.errors, function(prefix, val){
+                    
+                    $(form).find('span.'+prefix+'_error').text(val[0]);
+                });
+                }
+            }
+
+      
+        });
+    })
+</script>
+
+
+

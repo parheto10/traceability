@@ -1,0 +1,55 @@
+  <div class="modal-dialog modal-lg" role="document">
+    {% load widget_tweaks %}
+        <form method="post"  id="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="modal-title text-center" id="exampleModalLabel" style="font-weight:bold; text-align: center">MODIFIER SECTION : {{ instance.libelle }}</h4>
+                    <button ID="btnAnnuler" type="button" onclick="reload()" class="btn btn-danger pull-right" style="font-size:1.8vmin;margin-top: -30px">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="form-group">
+                                    <label>LIBELLE</label>
+                                    {% render_field form.libelle class="form-control" placeholder="Libelle" %}
+                                </div>
+                                <div class="form-group">
+                                    <label>RESPONSABLE</label>
+                                    {% render_field form.responsable class="form-control" placeholder="Responsable" %}
+                                </div>
+                                <div class="form-group">
+                                    <label>CONTACTS</label>
+                                    {% render_field form.contacts class="form-control CONTACT" placeholder="Contacts" maxlength="10" %}
+                                    <input type="hidden" name="instance_id" value="{{instance.id}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button type="button" class="btn btn-success btn-block" onclick="update('{% url 'cooperatives:update_section' %}')" style="font-size:1.7vmin"><i class="fa fa-times"></i> Valider </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+ <script>
+      var elem = document.querySelector(".CONTACT");
+        elem.addEventListener("keydown",function(event){
+            var key = event.which;
+            if((key<48 || key>57) && key != 8) event.preventDefault();
+                });
+        
+        elem.addEventListener("keyup",function(event){
+            var value = this.value.replace(/,/g,"");
+            this.dataset.currentValue=parseInt(value);
+            var caret = value.length-1;
+           
+            this.value = value;
+        });
+           
+ </script>

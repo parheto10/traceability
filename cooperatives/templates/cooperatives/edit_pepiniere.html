@@ -1,0 +1,158 @@
+ <div class="modal-dialog modal-lg" role="document">
+    {% load widget_tweaks %}
+       <form method="post" action="{% url 'update_pepiniere' %}" id="form_pepiniere" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h4 class="modal-title text-center" id="exampleModalLabel" style="font-weight:bold; text-align: center">MODIFIER PEPINIERE {{ instance.site }} - {{ instance.ville }}</h4>
+                                    <a href="{% url 'pepinieres' %}" ID="btnAnnuler" type="button" class="btn btn-danger pull-right" style="font-size:1.8vmin;margin-top: -25px">
+                                        <i class="fa fa-close"></i>
+                                    </a>
+                                </div>
+                                <div class="panel-body">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>PROJET</label>
+                                                {% render_field pepiForm.projet class="form-control" placeholder="Projet" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>REGION</label>
+                                                {% render_field pepiForm.region class="form-control" placeholder="Région" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>VILLE</label>
+                                                {% render_field pepiForm.ville class="form-control" placeholder="Ville" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>SITE / VILLAGE</label>
+                                                {% render_field pepiForm.site class="form-control" placeholder="Site / Village" %}
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>LATITUDE</label>
+                                                        {% render_field pepiForm.latitude class="form-control" placeholder="Latitude" %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>LONGITUDE</label>
+                                                        {% render_field pepiForm.longitude  class="form-control" placeholder="Longitude" %}
+                                                    </div>
+                                                </div>
+                                              
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>CAMPAGNE</label>
+                                                {% render_field pepiForm.campagne class="form-control" placeholder="Campagne" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>SUPERVISEUR</label>
+                                                {% render_field pepiForm.superviseur class="form-control" placeholder="Nom et Prénoms Superviseur" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>CONTACTS SUPERVISEUR</label>
+                                                {% render_field pepiForm.contacts_superviseur class="form-control" placeholder="Contacts Superviseur" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>TECHNICIEN</label>
+                                                {% render_field pepiForm.technicien class="form-control" placeholder="Nom et Prénoms Technicien" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>CONTACTS TECHNICIEN</label>
+                                                {% render_field pepiForm.contacts_technicien class="form-control" placeholder="Contacts Technicien" %}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>SACHETS RECUS</label>
+                                                {% render_field pepiForm.sachet_recus class="form-control" placeholder="Nombre Sachets Récu" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>NOMBRE PLANTS A PRODUIRE</label>
+                                                {% render_field pepiForm.production_plant class="form-control" placeholder="Nbre plants à Produire" %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label>NOMBRE PLANTS PRODUITS</label>
+                                                {% render_field pepiForm.production_realise class="form-control" placeholder="Nbre plants à Produire" %}
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>P. MATURE</label>
+                                                        {% render_field pepiForm.plant_mature class="form-control" placeholder="Nbre plants à MAtures" %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>P. ENLEVES</label>
+                                                        {% render_field pepiForm.plant_retire class="form-control" placeholder="Nbre plants à enlevés" %}
+                                                        <input type="hidden" name="instance_id" value="{{instance.id}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="panel-footer">
+{#                                <Button ID="btnAnnuler" style="font-size:1.7vmin; width:100px" class="btn btn-default"  data-dismiss="modal" >Annuler</Button>#}
+                                <input type="submit" name="btnValider" value="VALIDER" id="btnValider" class="btn btn-success btn-block" style="font-size:1.7vmin" />
+                            </div>
+                            </div>
+                        </form>
+
+    </div>
+
+    <script>
+        //var date = document.getElementById("id_date");
+        //var pattern =/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+    
+        //date.addEventListener("keyup", function (event) {
+        //    if(pattern.test(date) == false) {
+        //        date.setCustomValidity("Desolé format de date incorrect !");
+        //    } else {
+        //        date.setCustomValidity("");
+        //    }
+        //});
+        $('#form_pepiniere').on('submit', function (e) {
+            e.preventDefault()
+          
+            var form = this;
+    
+            $.ajax({
+                url:$(form).attr('action'),
+                method:$(form).attr('method'),
+                data:$(form).serialize(),
+                dataType:'json',
+                success: function(data){
+                    
+                    if(data.status == 200){
+                        swal({
+                            title: data.msg,
+                            icon: "success",
+                        })
+                        .then((ok) => {
+                            if(ok) {
+                                location.reload();
+                            }
+                        });
+                    }else{
+                        $.each(data.errors, function(prefix, val){
+                        
+                        $(form).find('span.'+prefix+'_error').text(val[0]);
+                    });
+                    }
+                }
+    
+          
+            });
+        })
+    </script>

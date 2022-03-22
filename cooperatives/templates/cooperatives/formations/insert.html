@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+{{ form.media.css }}
+{{ form.media.js }}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% block title %}
+{{ instance.libelle }} |
+{% endblock %}
+{% block content %}
+    <div id="wrapper">
+            <!-- Navigation -->
+            {% include 'cooperatives/coop_nav.html' %}
+            <div id="page-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3 class="page-header"> <a href="{% url 'cooperatives:formation' intitule.id %}"><i class="fa fa-arrow-left"></i></a>  Enregistrer une formation</h3>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+              
+                    <!-- /.row -->
+                    <div class="row">
+
+                        <div class="col-md-4 " style="border-right: solid;">
+                            <h3>PARTICIPANT</h3>
+                            <form id="addUser" action="">
+                                {% csrf_token %}
+                              <div class="form-group">
+                                <input class="form-control" onblur="globalproduct('{% url 'cooperatives:contactProd' %}')" type="text" list="nom" id="id_nom" name="nom" placeholder="Nom et prénoms" required>
+                                <span class="nom_error text-danger"></span>
+                                <datalist id="nom" >
+                                    {% for prod in producteurs %}
+                                        <option value="{{ prod.nom }} {{ prod.prenoms }}">{{ prod.nom }} {{ prod.prenoms }}</option>
+                                    {% endfor %}
+                                </datalist>
+                              </div>
+                              <div class="form-group">
+                                {% render_field participantForm.contact id="contact" maxlength="10" class="form-control CONTACT" pattern="\d*" placeholder="contact du Participant" %}
+                              </div>
+                              <button class="btn btn-primary form-control" onclick="saveParticipant('{% url 'cooperatives:saveParticipant' %}')"> Ajouter Participant </button>
+                            </form>
+                        </div>
+
+                        <div class="col-md-8">
+                            <form id="form" action="">
+                                {% csrf_token %}
+                                <h3 style="margin: 0px;">Info de la formation</h3>
+                                <hr style="margin: 0px 0px 8px 0px;">
+
+                                <div class="row">
+<!-- /.row -->  
+                                    <div class="col-md-6 " >
+                                        <div class="form-group">
+                                            {% render_field formationForm.formateur class="form-control" placeholder="Nom et prénoms du formateur" %}
+                                            <span class="formateur_error text-danger"></span>
+                                        <!--  <input class="form-control" type="text" name="formation" placeholder="Nom et prénoms du formateur" required>-->  
+                                          </div>
+
+                                    </div>
+                                    <div class="col-md-6 " >
+                                        <div class="form-group">
+                                           <select class="form-control" name="campagne" id="">
+                                            <option value="" selected>--Select Campagne--</option>
+                                               {% for campagne in campagnes %}
+                                                 <option value="{{campagne.id}}">{{campagne.titre}}</option>
+                                               {% endfor %}                                              
+                                           </select>                                      
+                                           <span class="campagne_error text-danger"></span>
+                                          </div>
+                                    </div>                        
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">   
+                                            <label for="">Structure du formateur</label> 
+                                            {% render_field formationForm.structureformateur  class="form-control"   %}
+
+                                            <!-- <textarea name="" id="" cols="20" placeholder="Note du formateur" rows="2"></textarea>-->
+                                          </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">   
+                                            <label for="">Niveau du formateur</label> 
+                                            {% render_field formationForm.niveauformateur  class="form-control"   %}
+
+                                            <!-- <textarea name="" id="" cols="20" placeholder="Note du formateur" rows="2"></textarea>-->
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4" >
+                                        <div class="form-group">
+                                            <label for="">Date debut</label>
+                                             <input class="form-control" type="hidden" name="intitule" value="{{intitule.id}}" >
+                                            {% render_field formationForm.debut type="date" class="form-control"  %}
+                                            <span class="debut_error text-danger"></span>
+                                          </div>
+                                    </div> 
+                                    <div class="col-md-4" >
+                                        <div class="form-group">
+                                            <label for="">Date fin</label>
+                                            {% render_field formationForm.fin type="date" class="form-control"  %}
+                                            <span class="fin_error text-danger"></span>
+                                          </div>
+
+                                    </div> 
+                                    <div class="col-md-4" >
+                                        <div class="form-group">   
+                                            <label for="">Critère de satisfaction</label> 
+                                            {% render_field formationForm.critere  class="form-control"   %}
+
+                                            <!-- <textarea name="" id="" cols="20" placeholder="Note du formateur" rows="2"></textarea>-->
+                                          </div>
+
+                                    </div> 
+                                </div>
+                               
+                                <div class="row">
+                                    <div class="col-md-8" >
+                                        <div class="form-group">    
+                                            {% render_field formationForm.note_formateur  class="form-control" placeholder="Mot du formateur" rows="3" cols="20"  %}
+
+                                            <!-- <textarea name="" id="" cols="20" placeholder="Note du formateur" rows="2"></textarea>-->
+                                          </div>
+
+                                    </div> 
+
+                                </div>
+                                <hr style="margin: 0px 0px 8px 0px;">
+                                <h5 style="margin: 0px;">Liste des Participants</h5>
+                                <table id="userTable" class="table table-bordered border-primary" >
+                                    <thead class="table-primary" style="background-color: skyblue;">
+                                        <tr>
+                                          
+                                            <th>Nom et prénoms</th>
+                                            <th>Telephone</th>
+                                            <th>Action</th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        {% for participant in participants %}
+
+                                        <tr id="participant-{{participant.id}}"> 
+                                         <td id="col0">
+                                                <input type="text" class="form-control" value="{{participant.nom}}" name="nom" readonly >
+                                                <input class="form-control" type="hidden" name="participant" value="{{participant.id}}" >
+                                            </td> 
+                                            <td id="col1">
+                                                
+                                                <input type="text" class="form-control" {% if not participant.contact %} value="" {% else %} value="{{participant.contact}}" {% endif %}   name="contact" readonly >
+                                            </td> 
+                                        
+                                            <td id="col2 " class="text-center"> 
+                                                <a href="#"  onclick="delete_semence('{% url 'cooperatives:participant_delete' participant.id %}' )" style="padding: 0px;" class="btn btn-danger">
+                                                    <i class="fa fa-trash fa-fw"></i>
+                                                </a>
+                                            </td>
+                                           
+                                        </tr>
+
+                                        {% endfor %}                                    
+                                                                                                                                                      
+                                        
+                                        
+                                    </tbody>  
+                           
+                                </table> 
+                                    
+                                       <!-- <td><button type="button" class="btn btn-sm btn-info" onclick="addRows()">Add</button></td>
+                                        <td><button type="button" class="btn btn-sm btn-danger" onclick="deleteRows()">Remore</button></td>-->
+                                       <button onclick="SaveAndRedirect('{% url 'cooperatives:formationSave' %}')" class="btn btn-sm btn-success " style="float: right;">Enregistrer la formation</button>
+                                  
+                                <br>
+                                <br>
+
+                            </form>
+
+                        </div>
+                        
+                     
+                
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+                
+            </div>
+            <!-- /#page-wrapper -->
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="{% static 'lib/jquery.formatter.min.js' %}"></script>
+        
+
+        <script src="{% static 'js/function.js' %}"></script>
+{% endblock %}
+

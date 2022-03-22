@@ -1,0 +1,61 @@
+#map {
+    width: 100%;
+    height: calc(100vh);
+}
+
+.map-coordonnes{
+    position: absolute;
+    bottom: 0;
+    left: 40%;
+    padding: 8px;
+    transform: translateX(-50);
+    background-color: #007bff;
+    font-weight: bold;
+    color: #fff;
+    font-size: 18px;
+    border: 1px solid black;'VILLES' : marker,
+     'ABIDJAN': singleMarker
+    border-radius: 5px;
+}
+
+.leaflet-control {
+    /* float: left; */
+    clear: both;
+    margin-top: 15px;
+}
+#inputs {
+    float: right;
+    position: absolute;
+    align-content: center;
+    text-align: center;
+}
+.inputs {
+    position: absolute;
+    text-align: center;
+    margin-top: 10px;
+    left: 10%;
+    padding: 8px;
+    transform: translateX(-50);
+    /*background-color: #007bff;*/
+    font-weight: bold;
+    border-radius: 25px;
+}
+
+.full-screen {
+    padding: 5px;
+    background-color: #fff;
+    position: absolute;
+    right: 10px;
+    top: 220px;
+}
+
+.zoom {
+    padding: 5px;
+    background-color: #fff;
+    position: absolute;
+    right: 10px;
+    top: 270px;
+}
+
+
+

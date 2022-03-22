@@ -1,0 +1,36 @@
+{% load static %}
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav" id="side-menu">
+            <li>
+                <a href="{% url 'accueil' %}" {% if activate == "accueil" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-dashboard fa-fw"></i> DASHBOARD</a>
+            </li>
+             <!--<li>
+                <a href="#" class="active"><i class="fa fa-th-list fa-fw"></i> GESTION PROJETS</a>
+            </li>-->
+               <!-- /.navbar-top-links -->
+            <li>
+                <a href="{% url 'primes' %}" {% if activate == "prime" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-money fa-fw"></i> GESTION PRIMES</a>
+            </li>
+         
+            <li>
+                <a href="{% url 'producteurs' %}" {% if activate == "producteur" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-users fa-fw"></i> GESTION PRODUCTEURS</a>
+            </li>
+            <li>
+                <a href="{% url 'parcelles' %}" {% if activate == "parcelle" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-map" aria-hidden="true"></i> GESTION PARCELLES</a>
+            </li>
+            <li>
+                <a href="{% url 'productions' %}" {% if activate == "production" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-cubes" aria-hidden="true"></i> GESTION PRODUCTIONS</a>
+            </li>
+            <li>
+                <a href="{% url 'pepinieres' %}" {% if activate == "pepiniere" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-tree fa-fw"></i> GESTION SITES PEPINIERES</a>
+            </li>
+            <li>
+                <a href="{% url 'catre_parcelles' %}" target="_blank"><i class="fa fa-map-marker fa-fw"></i>CARTE PARCELLES</a>
+            </li>
+            <li>
+                <a href="{% url 'catre_pepiniere' %}" target="_blank"><i class="fa fa-map-pin" aria-hidden="true"></i> CARTE PEPINIERES</a>
+            </li>
+        </ul>
+    </div>
+</div>

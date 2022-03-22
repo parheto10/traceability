@@ -1,0 +1,180 @@
+
+<div class="modal-dialog modal-lg" role="document">
+    {% load widget_tweaks %}
+    <form method="post" id="form_monitoring" action="{% url 'cooperatives:edit_monitoring' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="modal-title" id="exampleModalLabel" style="font-weight:bold">MONITORING</h4>
+            <button ID="btnAnnuler" type="button" onclick="reload()" class="btn btn-danger pull-right" style="font-size:1.8vmin;margin-top: -30px">
+                <i class="fa fa-close"></i>
+            </button>
+        </div>
+        <div class="panel-body">
+            
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        <label>Date Monitoring :</label>
+                        {% if d_date %}
+                            {% render_field monitoringForm.date  class="form-control"  cols="4" rows="4" placeholder="jj/mm/aaa" %}
+                            <span class="date_error text-danger"></span>
+                        {% else %}
+                            {% render_field monitoringForm.date type="date" class="form-control" placeholder="Date" %}
+                        {% endif %}
+                        
+                    </div>
+                </div>
+              <!--  <div class="col-sm-4 ">
+                    <div class="form-group">
+                        <label>Agent(Nom et Prénoms)</label>
+                        <input type="text"  class="form-control"  >
+                    </div>
+                </div>-->
+
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <label>Observations</label>
+                        {% render_field monitoringForm.observation class="form-control", placeholder="Observation" %}
+                    </div>
+                </div>
+          
+            
+            <table id="emptbl" class="table table-bordered border-primar">
+
+                
+            <thead class="table-dark">
+                <tr>
+                    <th>Espece</th>
+                    <th>Plants reçu</th>
+                    <th>Nombres Plant vivants</th>
+                    <th>Nombres Plant Mort</th> 
+                </tr>
+            </thead>
+            <tbody>
+                {% for Planting in Plantings %}
+                                        
+                                        
+                <tr> 
+                    <td id="col2">                     
+                        <select class="form-control" name="espece" id="dept" >                        
+                            <option value="{{Planting.espece.id}}">{{Planting.espece}}</option>                         
+                        </select> 
+                      
+                    </td> 
+                    <td id="col0"><input type="text" id="recus{{forloop.counter}}" value="{{Planting.detailplanting.nb_plante}}" class="form-control" readonly></td> 
+                    <td id="col0"><input type="number" id="mature{{forloop.counter}}" class="form-control" name="mort"  value="{{Planting.mort}}" placeholder="Entrer nombre plant vivant" required></td> 
+                    <td id="col1"><input type="number" id="mort{{forloop.counter}}" class="form-control" name="mature" value="{{Planting.mature}}" placeholder="Entrer nombre de plant mort" required></td> 
+                   
+                    <input type="hidden" name="monitoring_id" value="{{monitoring.id}}">
+                    <input type="hidden" name="detailmonitoring_id" value="{{detail_monitoring.id}}">
+                    <input type="hidden" class="form-control" name="d_planting" value="{{Planting.detailplanting_id}}">
+                </tr>
+               
+                {% endfor %}
+            </tbody>  
+        </table> 
+        <table>
+            <br>
+            <tr> 
+               <!-- <td><button type="button" class="btn btn-sm btn-info" onclick="addRows()">Add</button></td>
+                <td><button type="button" class="btn btn-sm btn-danger" onclick="deleteRows()">Remore</button></td>-->
+                <td><button type="submit" class="btn btn-sm btn-success form-control">Enregistrer</button></td> 
+            </tr>  
+        </table>
+    </div>
+    </div>
+    </form>
+</div>
+
+   <!-- <form method="post" id="form_monitoring" action="{% url 'cooperatives:edit_monitoring' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="modal-title" id="exampleModalLabel" style="font-weight:bold">MONITORING</h4>
+                <button ID="btnAnnuler" type="button" onclick="reload()" class="btn btn-danger pull-right" style="font-size:1.8vmin;margin-top: -30px">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <div class="form-group">
+                            <label>Date :</label>
+                            {% if d_date %}
+                                {% render_field monitoringForm.date  class="form-control"  cols="4" rows="4" placeholder="jj/mm/aaa" %}
+                                <span class="date_error text-danger"></span>
+                            {% else %}
+                                {% render_field monitoringForm.date type="date" class="form-control" placeholder="Date" %}
+                            {% endif %}
+                            
+                        </div>
+                        <div class="form-group">
+                            <label>Plants Vivants</label>
+                            {% render_field monitoringForm.mature class="form-control", placeholder="Plants Matures" %}
+                        </div>
+                        <div class="form-group">
+                            <label>Plants à Remplacés</label>
+                            {% render_field monitoringForm.mort class="form-control", placeholder="Plant Mort" %}
+                            <input type="hidden" name="instance_id" value="{{instance.id}}">
+                        </div>
+                      <div class="form-group">
+                          <label>Observations</label>
+                          {% render_field monitoringForm.observation class="form-control", placeholder="Observation" %}
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <input type="submit" name="btnValider" value="VALIDER" id="btnValider" class="btn btn-success btn-block" style="font-size:1.7vmin" />
+            </div>
+        </div>
+    </form>-->
+
+
+   
+  
+    <script>
+        //var date = document.getElementById("id_date");
+        //var pattern =/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+    
+        //date.addEventListener("keyup", function (event) {
+        //    if(pattern.test(date) == false) {
+        //        date.setCustomValidity("Desolé format de date incorrect !");
+        //    } else {
+        //        date.setCustomValidity("");
+        //    }
+        //});
+        $('#form_monitoring').on('submit', function (e) {
+            e.preventDefault()
+          
+            var form = this;
+    
+            $.ajax({
+                url:$(form).attr('action'),
+                method:$(form).attr('method'),
+                data:$(form).serialize(),
+                dataType:'json',
+                success: function(data){
+                    
+                    if(data.status == 200){
+                        swal({
+                            title: data.msg,
+                            icon: "success",
+                        })
+                        .then((ok) => {
+                            if(ok) {
+                                location.reload();
+                            }
+                        });
+                    }else{
+                        $.each(data.errors, function(prefix, val){
+                        
+                        $(form).find('span.'+prefix+'_error').text(val[0]);
+                    });
+                    }
+                }
+    
+          
+            });
+        })
+    </script>

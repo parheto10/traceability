@@ -1,0 +1,41 @@
+{% load static %}
+<style>
+    .sidebar ul li a.active {
+    background-color: #b4b4b4;
+}
+</style>
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav" id="side-menu">
+            <li>
+                <a href="{% url 'clients:dashboard' %}" {% if activate == "dashboard" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-dashboard fa-fw"></i> DASHBOARD</a>
+            </li>
+            <li>
+{#                <a href="{% url 'clients:projets' %}" class="active"><i class="fa fa-dashboard fa-fw"></i> GESTION PROJETS</a>#}
+            </li>
+         
+            <li>
+                <a href="{% url 'clients:producteurs' %}" {% if activate == "pepiniere" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-users fa-fw"></i> GESTION PRODUCTEURS</a>
+            </li>
+            <li>
+                <a href="{% url 'clients:parcelles' %}" {% if activate == "pepiniere" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-map" aria-hidden="true"></i> GESTION PARCELLES</a>
+            </li>
+            <li>
+                <a href="{% url 'clients:plantings' %}" {% if activate == "pepiniere" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-tree" aria-hidden="true"></i> GESTION PLANTINGS</a>
+            </li>
+            <li>
+                <a href="{% url 'clients:productions' %}" {% if activate == "pepiniere" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-cubes" aria-hidden="true"></i> GESTION PRODUCTIONS</a>
+            </li>
+            <li>
+                <a href="{% url 'catre_parcelles' %}" target="_blank"><i class="fa fa-map-marker fa-fw"></i>CARTE PARCELLES</a>
+            </li>
+
+            <li>
+                <a href="{% url 'catre_pepiniere' %}" target="_blank"><i class="fa fa-map-pin" aria-hidden="true"></i> CARTE PEPINIERES</a>
+            </li>
+            <li>
+                {#                  <a href="#" target="_blank"><i class="fa fa-map-marker fa-fw"></i> PLANTINGS</a>#}
+            </li>
+        </ul>
+    </div>
+</div>

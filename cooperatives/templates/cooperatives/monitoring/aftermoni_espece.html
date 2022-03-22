@@ -1,0 +1,237 @@
+{% load widget_tweaks %}
+{% load static %}
+    <div class="modal-dialog modal-lg" role="document">
+        <form id="forme" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="panel panel-green">
+            <div class="panel-heading">
+                <h4 class="modal-title" id="exampleModalLabel" style="font-weight:bold">FORMULAIRE DE REMPLACEMENT</h4>
+                <button ID="btnAnnuler" type="button" data-dismiss="modal" class="btn btn-danger pull-right" style="font-size:1.8vmin;margin-top: -30px">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+            <div class="panel-body">
+                <div class="row"> 
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Date remplacement</label>
+                            {% render_field formRemplacement.date type="date" class="form-control"  %}
+                            <span class="date_error text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr style="padding: 0%;margin: 0%;">
+                 <!-- style table-->
+                <style>
+                    .remplacement{
+                        width: 85%;
+                        height: 26px;
+                        padding: 4px 12px;
+                        font-size: 11px;
+                    }
+                </style>
+                <fieldset>
+                    <legend class="text-center" style="margin-bottom: 0px;">Remplacer des especes </legend>
+                <table id="empt" class="table table-bordered border-primary" style="height: 0px;">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Espèces</th>
+                            <th style="width: 15% ;">Plants reçu</th>
+                            <th>Plants morts dernier monitoring</th>
+                            <th>Remplacer ?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                      
+                          
+                        {% for monitoring in especes %}
+                            <tr>
+                                <td>                     
+                                    <select class="form-control remplacement" name="espece" id="dept" >                        
+                                        <option value="{{ monitoring.espece.id }}">{{ monitoring.espece.libelle }}</option>                         
+                                    </select> 
+                                  
+                                </td> 
+                                <td><input type="number" id="recus" ondblclick="removeGris()" value="{{ monitoring.recu }}" name="recus" class="form-control remplacement" readonly></td>
+                                <td><input type="number" id="mort" value="{{ monitoring.futur }}" name="mort" class="form-control remplacement" readonly></td>
+                                <td><input type="number" id="remplacer" value="0" name="remplacer" class="form-control remplacement" {% if monitoring.futur == 0 %}readonly{% else %}{% endif %}></td>
+                             
+                            </tr>
+                        {% endfor %}
+                        <tr> 
+                            <td id="cil0"> 
+                                <select class="form-control remplacement" name="newespece" id="dept" required> 
+                                    <option selected value="">-- Select --</option> 
+                                        {% for espece in especes_plants  %}
+                                          <option value="{{espece.id}}">{{espece.libelle}}</option>
+                                        {% endfor %}
+                                                                                
+                                </select> 
+                            </td> 
+                            <td id="cil1"><input type="number" ondblclick="removeGrisnew()" class="form-control remplacement" value="0" name="newrecus" readonly></td> 
+                           <input type="hidden" class="form-control" name="monitoring" value="{{remplace.monitoring.id}}"  >
+                           <td id="cil2"><input type="number" class="form-control remplacement" value="0" name="mortn"  readonly></td>
+                           <td id="cil3"><input type="number" class="form-control remplacement" value="0" name="remplacern"  readonly></td>
+                        </tr>
+                    </tbody>  
+                </table> 
+
+                     <button type="button" class="btn btn-sm btn-info" onclick="addRows()">Ajouter</button>
+                     <button type="button" class="btn btn-sm btn-danger" onclick="deleteRows()">Retirer</button>
+                     <button onclick="SaveAndRemplacement('{% url 'cooperatives:RemplaceSave' %}')" class="btn btn-sm btn-success" style="float: right;" >Enregistrer Remplacement</button>
+             
+            </fieldset>
+            </div>
+
+           
+          
+              <!-- <div class="panel-footer">
+                <input type="submit" name="btnValider" value="Valider" id="btnValider" class="btn btn-success btn-block btn_valider" style="font-size:1.7vmin;" />
+            </div>-->
+
+        </div>
+        </form>
+    </div>
+
+
+    <script>
+        function addRows()
+        { 
+           
+            var table = document.getElementById('empt');
+           
+            var rowCount = table.rows.length;
+           
+            var cellCount = table.rows[0].cells.length; 
+            
+            var row = table.insertRow(rowCount);
+           
+            for(var i =0; i < cellCount; i++)
+            {
+               
+                var cell = 'cell'+i;
+                cell = row.insertCell(i);
+                var copycel = document.getElementById('cil'+i).innerHTML;
+                cell.innerHTML=copycel;
+                
+                //if(i == 2)
+                //{ 
+                //    var radioinput = document.getElementById('col2').getElementsByTagName('input'); 
+                //    for(var j = 0; j <= radioinput.length; j++)
+                //    { 
+                //        if(radioinput[j].type == 'radio')
+                //        { 
+                //            var rownum = rowCount;
+                //            radioinput[j].name = 'gender['+rownum+']';
+                //        }
+                //    }
+                //}
+            }
+        }
+    
+        function deleteRows()
+        {
+            var table = document.getElementById('empt');
+            var rowCount = table.rows.length;
+            if(rowCount > '7')
+            {
+                var row = table.deleteRow(rowCount-1);
+                rowCount--;
+            }else{
+                alert('Impossible de supprimer cette ligne');
+            }
+        }
+    </script>
+<script>
+
+    function removeGris() {
+      
+       $("input[name='recus']").removeAttr("readonly");
+    }
+
+    function removeGrisnew() {
+
+        $("input[name='newrecus']").removeAttr("readonly");      
+            
+    }
+
+
+    function SaveAndRemplacement(url) {
+        event.preventDefault();
+        var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+       var date = $('#forme').find('input#id_date').val();
+     
+
+        if(date != ""){
+            $.ajax({
+                url:url,
+                method:'POST',
+                data:$('#forme').serialize(),
+                dataType:'json',
+                success: function(data){
+                    if(data.status == 400){
+          
+                      swal({
+                              title: data.msg,
+                              icon: "error",
+                              dangerMode: true,
+                          })
+          
+                    }else{
+                        //console.log(data)
+          
+                        if(data.status == 200){
+                          swal({
+                      title: data.msg,
+                      icon: "warning",
+                      buttons: true,
+                      dangerMode: true,
+                  })
+                      .then((willDelete) => {
+                      if (willDelete) {
+                          $.post('{% url 'cooperatives:endremplaceSave' %}' , {data:$('#forme').serialize()},csrfToken);
+                          swal("Remplacement effectué avec success !", {
+                              icon: "success",
+                          })
+                          .then((ok) => {
+                              if(ok) {
+                                  location.reload();
+                              }
+                          });
+                          
+                      } else {
+                         
+          
+              }
+              });   
+            }else{
+
+                    if(data.status == 300){
+                        swal({
+                            title: data.msg,
+                            icon: "success",
+                        })
+                        .then((ok) => {
+                            if(ok) {
+                                location.reload();
+                            }
+                        });
+                    }
+
+                        }
+          
+                    }
+          
+                   
+          
+                }
+            });
+        }else{
+            alertify.error("Le champs date est obligatoire");
+        }
+
+  
+  
+    }
+</script>

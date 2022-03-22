@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+<style>
+    #theader {
+        margin-top: 5px;
+    }
+    table { table-layout: fixed; }
+    table th, table td { overflow: hidden; margin-top: 15px;  min-width: 100px; }
+    @page {
+        size: a4 portrait;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 10pt; height: 40pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            {#-pdf-frame-content: content_frame;#}
+            left: 30pt; width: 555pt; top: 40pt; height: 780pt;
+            {#left: 30pt; width: 780pt; top: 40pt; height: 720pt;#}
+            background-color: red;
+            {#top: 50pt; height: 750pt;#}
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 825pt; height: 50pt;
+        }
+        {#@frame footer_frame {           /* Another static Frame */#}
+        {#    -pdf-frame-content: footer_content;#}
+        {#    width: 512pt; top: 650pt; height: 50pt;#}
+            {#left: 200pt; width: 512pt; top: 20pt; height: 20pt;#}
+        {#}#}
+    }
+    {#@page {#}
+    {#    size: letter landscape;#}
+    {#    margin: 2cm;#}
+    {#}#}
+</style>
+{% endblock extra_css %}
+{% load static %}
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% block title %}
+    Parcelles |
+{% endblock %}
+{% block content %}
+    <div id="wrapper">    
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-info">
+                            <!-- /.panel-heading -->
+                            <div id="header_content">                                
+                                <h1 style="text-align: center;font-weight: bold; font-size: 22px; text-decoration: underline; text-transform: uppercase;">
+                                    LISTE DES PARCELLES - {{ cooperative }}
+                                </h1>
+                            </div>
+                            <div id="footer_content" style="text-align: center;">
+                                PARCELLES {{ cooperative }} - page <pdf:pagenumber> / <pdf:pagecount> - Copyright(c) - AGRO-MAP
+                            </div>
+                            <div class="panel-body" style="font-size: 11px; background-image: url(/img/logo.png)">
+                                <div class="table-responsive span12">
+                                    <table class="table table-striped" border="0.3" style="text-align: center; height:20px; padding-top: 2px; padding-bottom: -5px">
+                                        <thead style="margin-top: 15px">
+                                            <tr style="margin-top: 15px;">
+                                                <th style="width: 4% ;">ID</th>
+                                                <th style="width: 10%">CODE</th>
+                                                <th style="width: 25%; margin-top: 15px">PROPRIETAIRE</th>
+                                                <th style="margin-top: 17px">SECTION</th>
+                                                <th style="width: 13%; margin-top: 15px">LOCALITE</th>
+                                                <th style="width: 8%">SUP(Ha)</th>
+                                                 <th style="width: 9%">LAT</th>
+                                                <th style="width: 9%">LON</th>
+                                                <th style="width: 8%">CULTURE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for parcelle in parcelles %}
+                                                <tr style="background-image: url(/img/Logo.jpg)">
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td><b>{{ parcelle.code|upper }}</b></td>
+                                                    <td>{{ parcelle.producteur.nom|upper|truncatewords:3 }}</td>
+                                                    <td>{{ parcelle.producteur.section|upper }}</td>
+                                                    <td>{{ parcelle.producteur.localite|upper }}</td>
+                                                    <td class="center">{% if parcelle.superficie %}{{ parcelle.superficie }}{% else %}{% endif %}</td>
+                                                    <td class="center">{% if parcelle.longitude %}{{ parcelle.longitude }}{% else %}{% endif %}</td>
+                                                    <td class="center">{% if parcelle.latitude %}{{ parcelle.latitude }}{% else %}{% endif %}</td>
+                                                    <td>{{ parcelle.culture }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>                        
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                            <div class="panel-footer">
+                            </div>
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-8 -->
+                </div>
+                <!-- /.row -->
+            </div>            
+        </div>
+    </div>
+{% endblock %}

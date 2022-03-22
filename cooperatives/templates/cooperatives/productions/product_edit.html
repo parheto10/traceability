@@ -1,0 +1,40 @@
+{% load widget_tweaks %}
+<div class="modal-dialog modal-md" role="document">
+    <form method="post" id="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <i class="glyphicon glyphicon-plus" style="margin-bottom: 10px"></i> MODIFIER UNE RECOLTE
+                <button ID="btnAnnuler" type="button" data-dismiss="modal" class="btn btn-danger pull-right" style="font-size:1.8vmin; margin-top: -5px">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+            <div class="panel-body">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-3">
+                        <div class="form-group">
+                            <label>CAMPAGNE</label>
+                            {% render_field form.campagne class="form-control" %}
+                            <input type="hidden" name="instance_id" value="{{instance.id}}">
+                        </div>
+                        <div class="form-group">
+                            <label>PARCELLE</label>   
+                            {% render_field form.parcelle class="form-control" %}
+                        </div>
+                        <div class="form-group">
+                            <label>QTE PRODUITE</label>
+                            {% render_field form.qteProduct class="form-control" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="panel-footer" style="padding: 10px;">
+{#                                <Button ID="btnAnnuler" style="font-size:1.7vmin" class="btn btn-danger"  data-dismiss="modal" >Annuler</Button>#}
+                <button onclick="update('{% url 'cooperatives:production_update' %}')" class="btn btn-sm btn-success btn-block" style="font-size:1.7vmin;" >VALIDER</button>
+        </div>
+        </div>
+    </form>
+
+</div>

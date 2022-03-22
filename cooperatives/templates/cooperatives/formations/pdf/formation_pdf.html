@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+<style>
+    @page {
+        {size: letter landscape;}
+        margin: 2cm;
+    }
+</style>
+{% endblock extra_css %}
+{% load static %}
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% block title %}
+    Producteurs |
+{% endblock %}
+{% block content %}
+    <div id="wrapper">        
+        <div id="page-wrapper" style="background-image: url('http://127.0.0.1:8000/static/img/Logo.jpg');">
+            <div class="container-fluid">
+                <div class="row">
+              
+                        <div id="header_content">
+                            <h1 style="text-align: center;font-weight: bold; font-size: 22px; text-decoration: underline;">{{ formation.intitule.libelle }} / {{ formation.intitule.projet }}  - {{ cooperative.sigle }}</h1>
+                            <div class="row">
+                                <div class="col-lg-6 text-left">
+                                    <h3 style="margin-top: -25px"><b>Formateur : {{ formation.formateur }}</b></h3>
+                                    <p style="margin-top: -25px"><b>Date formation : {{ formation.debut }}</b></p>
+                                    <p style="margin-top: -25px"><b>Durée : {{ formation.Duree }}</b> Jour(s)</p>
+                                    
+                                        <p style="margin-top: -25px"><b>Nombre de Participants</b>:  {{ nb_participant }}</p>
+            
+
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <p> <strong>Note</strong> :  {{ formation.note_formateur }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr style="border: solid;">
+                        <div class="panel panel-info">                            
+                            <!-- /.panel-heading -->
+                            <div class="panel-body" style="font-size: 12px">
+                                <h3 style="text-decoration: underline;text-align: center; ">Liste des participants </h3>
+                                <div class="table-responsive span12">
+                                    <table class="table table-striped" border="0.3" style="margin-left:7px;height:20px; padding-top: 2px; padding-bottom: -5px">
+                                        <thead style="margin-top: 15px">
+                                            <tr >
+                                                <th style="width: 4% ;">ID</th>
+                                                <th>NOM ET PRENOMS</th>
+                                                <th style="width: 21% ; margin-top: 15px">CONTACT</th>
+                                                <th style="width: 11%; margin-top: 15px">STATUS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for participant in participants %}
+                                           
+                                                <tr >
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td style="margin:auto; text-align:center;">{{ participant.nom|upper }}</td>
+                                                    <td style="margin:auto; text-align:center;">{{ participant.contact|upper }}</td>
+                                                    <td style="margin:auto; text-align:center;">MEMBRE</td>
+                                                </tr>
+                                          
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->                        
+                 
+                    <!-- /.col-lg-8 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+    </div>
+{% endblock %}

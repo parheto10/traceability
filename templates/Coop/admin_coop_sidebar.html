@@ -1,0 +1,23 @@
+{% load static %}
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav" id="side-menu">
+            <li>
+                <a href="{% url 'detail_coop' cooperative.id %}" {% if activate == "dashboard" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-dashboard fa-fw"></i> DASHBOARD</a>
+            </li>
+            <li>
+                <a href="{% url 'prod_coop' cooperative.id %}" {% if activate == "producteurs" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-users fa-fw"></i> PRODUCTEURS</a>
+            </li>
+            <li>
+                <a href="{% url 'parcelle_coop' cooperative.id %}" {% if activate == "parcelles" %}class="active"{% else %} class="" {% endif %}><i class="glyphicon glyphicon-grain"></i> PARCELLES</a>
+            </li>
+       
+            <li>
+                <a href="{% url 'formations' cooperative.id %}" {% if activate == "formations" %}class="active"{% else %} class="" {% endif %}><i class="fa fa-list-ul fa-fw"></i> FORMATIONS</a>
+            </li>
+            <li>
+                <a href="{% url 'map_by_cooperative' cooperative.id %}" target="_blank"><i class="fa fa-map fa-fw"></i> SUIVI PARCELLES</a>
+            </li>
+        </ul>
+    </div>
+</div>
